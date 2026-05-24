@@ -1,0 +1,1485 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RastrIA — Protótipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  :root {
+    /* light */
+    --fg: oklch(0.22 0.015 250);
+    --fg-2: oklch(0.45 0.012 250);
+    --fg-3: oklch(0.62 0.010 250);
+    --bg: oklch(0.985 0.003 250);
+    --bg-2: oklch(0.965 0.005 250);
+    --card: #ffffff;
+    --border: oklch(0.91 0.005 250);
+    --border-2: oklch(0.86 0.006 250);
+    --primary: oklch(0.50 0.085 200);
+    --primary-fg: #ffffff;
+    --primary-soft: oklch(0.95 0.025 200);
+    --primary-soft-fg: oklch(0.40 0.085 200);
+    --ok: oklch(0.62 0.13 155);
+    --ok-soft: oklch(0.95 0.04 155);
+    --warn: oklch(0.74 0.15 75);
+    --warn-soft: oklch(0.96 0.05 80);
+    --danger: oklch(0.60 0.20 25);
+    --danger-soft: oklch(0.96 0.04 25);
+    --info: oklch(0.62 0.12 250);
+    --info-soft: oklch(0.96 0.025 250);
+    --shadow: 0 1px 2px rgba(15,23,42,.04), 0 8px 24px -12px rgba(15,23,42,.08);
+  }
+  .theme-dark {
+    --fg: oklch(0.96 0.005 250);
+    --fg-2: oklch(0.78 0.008 250);
+    --fg-3: oklch(0.58 0.010 250);
+    --bg: oklch(0.18 0.012 250);
+    --bg-2: oklch(0.22 0.013 250);
+    --card: oklch(0.245 0.013 250);
+    --border: oklch(0.30 0.012 250);
+    --border-2: oklch(0.36 0.013 250);
+    --primary: oklch(0.72 0.10 200);
+    --primary-fg: oklch(0.18 0.012 250);
+    --primary-soft: oklch(0.30 0.04 200);
+    --primary-soft-fg: oklch(0.85 0.07 200);
+    --ok: oklch(0.74 0.15 155);
+    --ok-soft: oklch(0.30 0.06 155);
+    --warn: oklch(0.80 0.16 75);
+    --warn-soft: oklch(0.32 0.07 75);
+    --danger: oklch(0.72 0.18 25);
+    --danger-soft: oklch(0.32 0.08 25);
+    --info: oklch(0.72 0.12 250);
+    --info-soft: oklch(0.30 0.05 250);
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+  html, body { font-family: 'Inter', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { background: #0c0e12; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-feature-settings: "ss01"; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* iPhone frame */
+  .device-stage {
+    background:
+      radial-gradient(1200px 700px at 30% 10%, rgba(56,118,140,0.12), transparent 60%),
+      radial-gradient(900px 600px at 80% 90%, rgba(80,80,120,0.10), transparent 60%),
+      #0c0e12;
+  }
+  .iphone {
+    width: 390px;
+    height: 844px;
+    border-radius: 56px;
+    background: #0a0a0c;
+    padding: 12px;
+    box-shadow:
+      0 0 0 2px #1d1f25,
+      0 0 0 8px #0e1014,
+      0 30px 60px -20px rgba(0,0,0,0.6),
+      0 60px 120px -30px rgba(0,0,0,0.45);
+    position: relative;
+  }
+  .iphone-screen {
+    width: 100%; height: 100%;
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .iphone-notch {
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px; height: 34px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 50;
+    pointer-events: none;
+  }
+  .status-bar {
+    height: 54px;
+    padding: 18px 28px 0 28px;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    color: var(--fg);
+    font-weight: 600;
+    font-size: 15px;
+    position: relative;
+    z-index: 5;
+  }
+  .home-indicator {
+    position: absolute;
+    bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 134px; height: 5px; border-radius: 100px;
+    background: rgba(0,0,0,0.35);
+  }
+  .theme-dark .home-indicator { background: rgba(255,255,255,0.4); }
+
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .screen-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  .screen-body::-webkit-scrollbar { display: none; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border-radius: 14px; font-weight: 600; font-size: 15px;
+    padding: 14px 18px; transition: transform .06s ease, opacity .15s ease, background .2s ease;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active { transform: scale(0.985); }
+  .btn-primary { background: var(--primary); color: var(--primary-fg); }
+  .btn-ghost { background: var(--bg-2); color: var(--fg); border: 1px solid var(--border); }
+  .btn-danger { background: var(--danger); color: #fff; }
+
+  .field {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px;
+    color: var(--fg);
+    width: 100%;
+    font-size: 15px;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .field::placeholder { color: var(--fg-3); }
+  .field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent); }
+
+  .divider { height: 1px; background: var(--border); }
+
+  /* Live pulse */
+  @keyframes livePulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--ok) 60%, transparent); }
+    70% { box-shadow: 0 0 0 10px color-mix(in oklab, var(--ok) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--ok) 0%, transparent); }
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--ok);
+    animation: livePulse 1.6s infinite;
+  }
+
+  /* Pin pulse on map */
+  @keyframes pinPulse {
+    0% { transform: scale(1); opacity: .55; }
+    100% { transform: scale(2.6); opacity: 0; }
+  }
+  .pin-pulse {
+    position: absolute; inset: 0;
+    border-radius: 999px;
+    background: var(--primary);
+    animation: pinPulse 2s infinite;
+  }
+
+  /* Screen transition */
+  .screen-enter { opacity: 0; transform: translateY(6px); }
+  .screen-enter-active { opacity: 1; transform: translateY(0); transition: opacity .22s ease, transform .22s ease; }
+
+  /* Map grid */
+  .map-grid {
+    background-color: var(--bg-2);
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .tap { cursor: pointer; }
+  .tap:active { opacity: 0.8; }
+
+  /* hide focus outline globally inside the device, replace with field rule */
+  .iphone *:focus { outline: none; }
+
+  /* nav active indicator */
+  .nav-item { position: relative; }
+  .nav-item.active { color: var(--primary); }
+  .nav-item .nav-label { font-size: 10px; font-weight: 600; }
+
+  /* segmented */
+  .seg {
+    display: inline-flex; padding: 3px; background: var(--bg-2); border-radius: 10px; border: 1px solid var(--border);
+  }
+  .seg button {
+    padding: 6px 12px; font-size: 12px; font-weight: 600; color: var(--fg-2); border-radius: 7px;
+  }
+  .seg button.active { background: var(--card); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+
+  /* skeleton route stroke draw */
+  @keyframes drawRoute {
+    from { stroke-dashoffset: 800; }
+    to { stroke-dashoffset: 0; }
+  }
+  .route-draw { stroke-dasharray: 800; stroke-dashoffset: 800; animation: drawRoute 2s ease forwards; }
+
+  /* AI shimmer */
+  @keyframes aiShimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .ai-gradient-text {
+    background: linear-gradient(90deg, var(--fg) 0%, var(--primary) 50%, var(--fg) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: aiShimmer 4s linear infinite;
+  }
+
+  /* small bouncy emergence */
+  @keyframes pop {
+    0% { transform: scale(0.96); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .pop { animation: pop .25s ease-out; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect, useRef, useMemo, createContext, useContext } = React;
+
+/* ---------------- Icons (Lucide) ---------------- */
+function Icon({ name, size = 20, stroke = 1.75, className = "", style }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (ref.current && window.lucide) {
+      ref.current.innerHTML = "";
+      const el = document.createElement("i");
+      el.setAttribute("data-lucide", name);
+      ref.current.appendChild(el);
+      window.lucide.createIcons({ attrs: { width: size, height: size, "stroke-width": stroke } , nameAttr: "data-lucide" });
+    }
+  }, [name, size, stroke]);
+  return <span ref={ref} className={"inline-flex " + className} style={{ width: size, height: size, ...style }} />;
+}
+
+/* ---------------- Theme ---------------- */
+const ThemeCtx = createContext(null);
+function ThemeProvider({ children }) {
+  const [dark, setDark] = useState(false);
+  return (
+    <ThemeCtx.Provider value={{ dark, setDark }}>
+      <div className={dark ? "theme-dark" : ""} style={{ width: "100%", height: "100%" }}>{children}</div>
+    </ThemeCtx.Provider>
+  );
+}
+const useTheme = () => useContext(ThemeCtx);
+
+/* ---------------- Mock Data ---------------- */
+const VEHICLES = [
+  { id: "v1", model: "Fiat Strada Endurance", plate: "RKM-3F47", color: "Branca", year: "2024", odo: 18420, status: "available", fuel: 78 },
+  { id: "v2", model: "VW Saveiro Robust", plate: "PRD-7H21", color: "Prata", year: "2023", odo: 42180, status: "in-use", fuel: 56, driver: "Carolina Meneghetti" },
+  { id: "v3", model: "Renault Kwid Zen", plate: "MGA-4B92", color: "Cinza", year: "2024", odo: 9870, status: "available", fuel: 92 },
+  { id: "v4", model: "Fiat Strada Freedom", plate: "RBL-1C08", color: "Vermelha", year: "2022", odo: 67420, status: "offline", fuel: 24, driver: "Rafael Tomé" },
+  { id: "v5", model: "VW Saveiro Cross", plate: "QCA-9D15", color: "Preta", year: "2024", odo: 23110, status: "in-use", fuel: 68, driver: "Mateus Andrade" },
+];
+
+const TRIPS = [
+  { id: "t1", driver: "Carolina Meneghetti", vehicle: "VW Saveiro PRD-7H21", date: "Hoje", time: "08:42", duration: "2h 14min", distance: 47.3, status: "in-progress", from: "Centro de Distribuição — Sarandi", to: "Maringá Park, Maringá-PR", avgSpeed: 38 },
+  { id: "t2", driver: "Mateus Andrade", vehicle: "VW Saveiro QCA-9D15", date: "Hoje", time: "07:10", duration: "1h 02min", distance: 18.6, status: "completed", from: "Av. Colombo, 5790", to: "Av. Brasil, 4400", avgSpeed: 32 },
+  { id: "t3", driver: "Rafael Tomé", vehicle: "Fiat Strada RBL-1C08", date: "Ontem", time: "16:24", duration: "3h 47min", distance: 92.1, status: "suspicious", from: "Maringá-PR", to: "Mandaguaçu-PR (não previsto)", avgSpeed: 64 },
+  { id: "t4", driver: "Carolina Meneghetti", vehicle: "VW Saveiro PRD-7H21", date: "Ontem", time: "09:00", duration: "1h 38min", distance: 33.2, status: "completed", from: "Filial Cidade Alta", to: "Cliente — Zona 7", avgSpeed: 41 },
+  { id: "t5", driver: "Júlia Bertolini", vehicle: "Renault Kwid MGA-4B92", date: "23/04", time: "14:12", duration: "0h 48min", distance: 12.4, status: "completed", from: "Sede", to: "Posto Ipiranga — Av. Mandacaru", avgSpeed: 28 },
+];
+
+const ALERTS = [
+  { id: "a1", type: "offline", severity: "high", title: "Veículo offline há 18 min", subtitle: "Fiat Strada RBL-1C08 · Rafael Tomé", time: "agora" },
+  { id: "a2", type: "route", severity: "high", title: "Rota incompatível com destino", subtitle: "VW Saveiro QCA-9D15 · Mateus Andrade", time: "12 min" },
+  { id: "a3", type: "geofence", severity: "med", title: "Cerca geográfica violada", subtitle: "Saída de Maringá-PR às 14:08", time: "1h" },
+  { id: "a4", type: "maintenance", severity: "low", title: "Revisão em 312 km", subtitle: "Fiat Strada RKM-3F47", time: "Hoje" },
+  { id: "a5", type: "speed", severity: "med", title: "Pico de velocidade: 102 km/h", subtitle: "Av. Colombo · 11:44", time: "2h" },
+];
+
+const RESERVATIONS = [
+  { id: "r1", when: "Amanhã · 08:00", vehicle: "Fiat Strada RKM-3F47", purpose: "Visita cliente — Sarandi" },
+  { id: "r2", when: "Sex · 14:30", vehicle: "Renault Kwid MGA-4B92", purpose: "Manutenção preventiva" },
+];
+
+/* ---------------- Helpers ---------------- */
+function StatusChip({ status }) {
+  const map = {
+    available: { label: "Disponível", bg: "var(--ok-soft)", fg: "var(--ok)" },
+    "in-use":   { label: "Em uso",     bg: "var(--info-soft)", fg: "var(--info)" },
+    offline:    { label: "Offline",    bg: "var(--danger-soft)", fg: "var(--danger)" },
+    completed:  { label: "Concluída",  bg: "var(--ok-soft)", fg: "var(--ok)" },
+    "in-progress": { label: "Em andamento", bg: "var(--info-soft)", fg: "var(--info)" },
+    suspicious: { label: "Suspeita",   bg: "var(--warn-soft)", fg: "var(--warn)" },
+  };
+  const m = map[status] || { label: status, bg: "var(--bg-2)", fg: "var(--fg-2)" };
+  return <span className="chip" style={{ background: m.bg, color: m.fg }}>{m.label}</span>;
+}
+
+function SeverityDot({ s }) {
+  const c = s === "high" ? "var(--danger)" : s === "med" ? "var(--warn)" : "var(--info)";
+  return <span style={{ width: 8, height: 8, borderRadius: 999, background: c, display: "inline-block" }} />;
+}
+
+function StatusBar({ dark }) {
+  return (
+    <div className="status-bar">
+      <span className="num">9:41</span>
+      <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
+        <Icon name="signal" size={16} stroke={2.2} />
+        <Icon name="wifi" size={16} stroke={2.2} />
+        <Icon name="battery-full" size={20} stroke={2.2} />
+      </span>
+    </div>
+  );
+}
+
+/* ---------------- Map (SVG placeholder) ---------------- */
+function StylizedMap({ withRoute = false, animated = true, height = "100%" }) {
+  return (
+    <div className="map-grid" style={{ position: "relative", width: "100%", height, overflow: "hidden" }}>
+      {/* Streets */}
+      <svg viewBox="0 0 390 600" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+        <defs>
+          <linearGradient id="park" x1="0" x2="1">
+            <stop offset="0" stopColor="var(--ok-soft)" stopOpacity="0.7"/>
+            <stop offset="1" stopColor="var(--ok-soft)" stopOpacity="0.3"/>
+          </linearGradient>
+        </defs>
+        {/* park blob */}
+        <path d="M260,40 q40,-10 70,30 q20,40 -10,80 q-30,30 -80,10 q-30,-20 -10,-70 q10,-30 30,-50 z" fill="url(#park)" opacity="0.7" />
+        {/* big avenues */}
+        <path d="M-10,180 L420,150" stroke="var(--border-2)" strokeWidth="14" fill="none" />
+        <path d="M-10,400 L420,420" stroke="var(--border-2)" strokeWidth="14" fill="none" />
+        <path d="M70,-10 L100,650" stroke="var(--border-2)" strokeWidth="14" fill="none" />
+        <path d="M280,-10 L260,650" stroke="var(--border-2)" strokeWidth="14" fill="none" />
+        {/* secondary streets */}
+        <g stroke="var(--border)" strokeWidth="6" fill="none">
+          <path d="M-10,80 L420,90" />
+          <path d="M-10,260 L420,255" />
+          <path d="M-10,330 L420,335" />
+          <path d="M-10,500 L420,500" />
+          <path d="M170,-10 L180,650" />
+          <path d="M340,-10 L345,650" />
+        </g>
+        {/* lane center dashes */}
+        <g stroke="var(--card)" strokeWidth="1.5" strokeDasharray="6 8" fill="none" opacity="0.9">
+          <path d="M-10,180 L420,150" />
+          <path d="M-10,400 L420,420" />
+          <path d="M70,-10 L100,650" />
+          <path d="M280,-10 L260,650" />
+        </g>
+        {/* labels */}
+        <g fontFamily="Inter" fontSize="9" fill="var(--fg-3)" fontWeight="500">
+          <text x="14" y="146" transform="rotate(-2 14 146)">AV. COLOMBO</text>
+          <text x="14" y="416" transform="rotate(2 14 416)">AV. BRASIL</text>
+          <text x="108" y="60" transform="rotate(88 108 60)">R. NEO ALVES MARTINS</text>
+          <text x="268" y="60" transform="rotate(-88 268 60)">AV. MANDACARU</text>
+          <text x="282" y="80" fill="var(--ok)">PARQUE DO INGÁ</text>
+        </g>
+
+        {withRoute && (
+          <g>
+            <path
+              className={animated ? "route-draw" : ""}
+              d="M60,520 Q90,440 130,420 T230,360 Q260,330 270,260 T210,150 Q170,110 140,80"
+              stroke="var(--primary)" strokeWidth="4.5" fill="none" strokeLinecap="round" strokeLinejoin="round"
+            />
+            {/* start */}
+            <circle cx="60" cy="520" r="7" fill="var(--card)" stroke="var(--primary)" strokeWidth="3"/>
+            {/* end */}
+            <circle cx="140" cy="80" r="7" fill="var(--primary)" />
+            <circle cx="140" cy="80" r="3" fill="var(--card)" />
+          </g>
+        )}
+      </svg>
+
+      {/* central pin */}
+      {!withRoute && (
+        <div style={{ position: "absolute", left: "50%", top: "46%", transform: "translate(-50%,-50%)" }}>
+          <div style={{ position: "relative", width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div className="pin-pulse" />
+            <div style={{
+              position: "relative", width: 36, height: 36, borderRadius: 999,
+              background: "var(--primary)", border: "3px solid var(--card)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 6px 16px -6px rgba(0,0,0,0.35)"
+            }}>
+              <Icon name="truck" size={18} stroke={2.2} style={{ color: "var(--primary-fg)" }} />
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------------- Bottom Nav ---------------- */
+function BottomNav({ active, onChange }) {
+  const tabs = [
+    { id: "home", label: "Início", icon: "house" },
+    { id: "map", label: "Mapa", icon: "map" },
+    { id: "history", label: "Histórico", icon: "list" },
+    { id: "alerts", label: "Alertas", icon: "bell" },
+    { id: "admin", label: "Frota", icon: "layout-grid" },
+  ];
+  return (
+    <div style={{
+      borderTop: "1px solid var(--border)",
+      background: "var(--card)",
+      paddingBottom: 18, paddingTop: 8,
+    }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)" }}>
+        {tabs.map(t => (
+          <button key={t.id} onClick={() => onChange(t.id)}
+            className={"nav-item tap " + (active === t.id ? "active" : "")}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, padding: "6px 0",
+              color: active === t.id ? "var(--primary)" : "var(--fg-3)" }}>
+            <Icon name={t.icon} size={22} stroke={active === t.id ? 2.2 : 1.75} />
+            <span className="nav-label">{t.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- App Header ---------------- */
+function ScreenHeader({ title, subtitle, back, right }) {
+  return (
+    <div style={{ padding: "8px 20px 12px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+        {back && (
+          <button onClick={back} className="tap" style={{
+            width: 38, height: 38, borderRadius: 12, background: "var(--bg-2)", border: "1px solid var(--border)",
+            display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)"
+          }}>
+            <Icon name="chevron-left" size={20} />
+          </button>
+        )}
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.1 }}>{title}</div>
+          {subtitle && <div style={{ fontSize: 13, color: "var(--fg-3)", marginTop: 2 }}>{subtitle}</div>}
+        </div>
+      </div>
+      <div style={{ display: "flex", gap: 8 }}>{right}</div>
+    </div>
+  );
+}
+
+/* ---------------- 1. LOGIN ---------------- */
+function ScreenLogin({ onLogin }) {
+  const [email, setEmail] = useState("carolina.meneghetti");
+  const [pw, setPw] = useState("••••••••");
+  const [loading, setLoading] = useState(false);
+  const submit = () => {
+    setLoading(true);
+    setTimeout(() => { setLoading(false); onLogin(); }, 700);
+  };
+  return (
+    <div className="screen">
+      <StatusBar />
+      <div className="screen-body" style={{ padding: "20px 24px 24px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        <div>
+          {/* Logo */}
+          <div style={{ marginTop: 28, display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: 12,
+              background: "var(--primary)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 8px 24px -8px color-mix(in oklab, var(--primary) 60%, transparent)"
+            }}>
+              <Icon name="shield-check" size={22} stroke={2.2} style={{ color: "var(--primary-fg)" }} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: 20, letterSpacing: "-0.02em" }}>RastrIA</div>
+              <div style={{ fontSize: 12, color: "var(--fg-3)", marginTop: -2 }}>Controle de frota corporativa</div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 64 }}>
+            <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.15 }}>Bem-vinda de volta.</div>
+            <div style={{ color: "var(--fg-3)", marginTop: 6, fontSize: 15 }}>Acesse com sua matrícula corporativa.</div>
+          </div>
+
+          <div style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 12 }}>
+            <label style={{ fontSize: 12, color: "var(--fg-2)", fontWeight: 600 }}>Matrícula ou e-mail</label>
+            <div style={{ position: "relative" }}>
+              <Icon name="user" size={18} className="absolute" style={{ position: "absolute", left: 14, top: 14, color: "var(--fg-3)" }} />
+              <input className="field" style={{ paddingLeft: 42 }} value={email} onChange={e => setEmail(e.target.value)} />
+            </div>
+
+            <label style={{ fontSize: 12, color: "var(--fg-2)", fontWeight: 600, marginTop: 6 }}>Senha</label>
+            <div style={{ position: "relative" }}>
+              <Icon name="lock" size={18} style={{ position: "absolute", left: 14, top: 14, color: "var(--fg-3)" }} />
+              <input className="field" style={{ paddingLeft: 42 }} type="password" value={pw} onChange={e => setPw(e.target.value)} />
+              <button className="tap" style={{ position: "absolute", right: 12, top: 11, color: "var(--fg-3)", padding: 4 }}>
+                <Icon name="eye" size={18} />
+              </button>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 4 }}>
+              <label style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--fg-2)" }}>
+                <input type="checkbox" defaultChecked style={{ accentColor: "oklch(0.50 0.085 200)" }} />
+                Manter conectada
+              </label>
+              <button className="tap" style={{ fontSize: 13, color: "var(--primary)", fontWeight: 600 }}>Esqueci a senha</button>
+            </div>
+          </div>
+
+          <button onClick={submit} className="btn btn-primary tap" style={{ width: "100%", marginTop: 24, height: 52 }}>
+            {loading ? <Icon name="loader-circle" size={20} className="animate-spin" /> : <>Entrar <Icon name="arrow-right" size={18} /></>}
+          </button>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "20px 0 16px" }}>
+            <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+            <span style={{ fontSize: 11, color: "var(--fg-3)", fontWeight: 600, letterSpacing: "0.08em" }}>OU</span>
+            <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+          </div>
+
+          <button className="btn btn-ghost tap" style={{ width: "100%", height: 52 }}>
+            <Icon name="fingerprint" size={20} stroke={2} /> Entrar com biometria
+          </button>
+        </div>
+
+        <div style={{ textAlign: "center", color: "var(--fg-3)", fontSize: 11, marginTop: 24 }}>
+          v2.4.1 · Cliente: <span className="mono">PIROZZI LOG</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- 2. HOME ---------------- */
+function ScreenHome({ go, vehicleInUse, theme }) {
+  const v = VEHICLES[1]; // current driver carolina
+  const inUse = vehicleInUse;
+  return (
+    <div className="screen">
+      <StatusBar />
+      <ScreenHeader
+        title={<>Olá, <span style={{ color: "var(--primary)" }}>Carolina</span></>}
+        subtitle="Filial Maringá · Logística"
+        right={
+          <>
+            <button className="tap" onClick={() => theme.setDark(d => !d)} style={{
+              width: 38, height: 38, borderRadius: 12, background: "var(--bg-2)", border: "1px solid var(--border)",
+              display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)"
+            }}>
+              <Icon name={theme.dark ? "sun" : "moon"} size={18} />
+            </button>
+            <button className="tap" style={{
+              width: 38, height: 38, borderRadius: 12, background: "var(--bg-2)", border: "1px solid var(--border)",
+              display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)", position: "relative"
+            }} onClick={() => go("alerts")}>
+              <Icon name="bell" size={18} />
+              <span style={{ position: "absolute", top: 8, right: 9, width: 8, height: 8, borderRadius: 999, background: "var(--danger)", border: "2px solid var(--bg-2)" }} />
+            </button>
+          </>
+        }
+      />
+
+      <div className="screen-body" style={{ padding: "0 20px 24px" }}>
+
+        {/* Active vehicle card / hero */}
+        <div className="card pop" style={{ padding: 18, position: "relative", overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            {inUse ? <span className="live-dot" /> : <span style={{ width: 8, height: 8, borderRadius: 999, background: "var(--fg-3)" }} />}
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: inUse ? "var(--ok)" : "var(--fg-3)" }}>
+              {inUse ? "EM USO · AO VIVO" : "VEÍCULO RESERVADO"}
+            </span>
+          </div>
+          <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+            <div>
+              <div style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-0.01em" }}>{v.model}</div>
+              <div className="mono" style={{ fontSize: 13, color: "var(--fg-2)", marginTop: 2, fontWeight: 600 }}>{v.plate} · {v.color}</div>
+            </div>
+            <div style={{
+              width: 64, height: 44, borderRadius: 10, background: "var(--bg-2)",
+              display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg-3)"
+            }}>
+              <Icon name="truck" size={26} />
+            </div>
+          </div>
+
+          {inUse ? (
+            <>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginTop: 16 }}>
+                <Stat label="Em uso" value="2h 14m" />
+                <Stat label="Distância" value="47,3 km" />
+                <Stat label="Combust." value={v.fuel + "%"} />
+              </div>
+              <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+                <button onClick={() => go("map")} className="btn btn-ghost tap" style={{ flex: 1 }}>
+                  <Icon name="map-pin" size={18} /> Ver no mapa
+                </button>
+                <button onClick={() => go("checkin")} className="btn btn-danger tap" style={{ flex: 1 }}>
+                  <Icon name="square" size={16} stroke={2.4} /> Encerrar
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div style={{ marginTop: 14, fontSize: 13, color: "var(--fg-2)" }}>
+                Você está sem veículo ativo. Faça check-out para iniciar uma viagem.
+              </div>
+              <button onClick={() => go("checkout")} className="btn btn-primary tap" style={{ width: "100%", marginTop: 14, height: 56, fontSize: 16 }}>
+                <Icon name="key-round" size={20} /> Fazer check-out
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Quick actions */}
+        <div style={{ marginTop: 18, fontSize: 12, fontWeight: 700, color: "var(--fg-2)", letterSpacing: "0.06em" }}>ATALHOS</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10, marginTop: 10 }}>
+          {[
+            { icon: "map", label: "Mapa", to: "map" },
+            { icon: "history", label: "Trajetos", to: "history" },
+            { icon: "fuel", label: "Combustível" },
+            { icon: "wrench", label: "Manutenção" },
+          ].map((a, i) => (
+            <button key={i} onClick={() => a.to && go(a.to)} className="card tap" style={{ padding: "14px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: 10,
+                background: "var(--primary-soft)", color: "var(--primary-soft-fg)",
+                display: "flex", alignItems: "center", justifyContent: "center"
+              }}>
+                <Icon name={a.icon} size={18} />
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 600, color: "var(--fg-2)" }}>{a.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Reservas */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 22 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: "var(--fg-2)", letterSpacing: "0.06em" }}>PRÓXIMAS RESERVAS</div>
+          <button className="tap" style={{ fontSize: 12, color: "var(--primary)", fontWeight: 600 }}>Ver todas</button>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 10 }}>
+          {RESERVATIONS.map(r => (
+            <div key={r.id} className="card" style={{ padding: 14, display: "flex", gap: 12, alignItems: "center" }}>
+              <div style={{
+                width: 44, height: 44, borderRadius: 12, background: "var(--bg-2)",
+                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "var(--fg-2)"
+              }}>
+                <Icon name="calendar" size={18} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>{r.when}</div>
+                <div style={{ fontSize: 12, color: "var(--fg-3)", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.purpose}</div>
+                <div className="mono" style={{ fontSize: 11, color: "var(--fg-2)", marginTop: 2, fontWeight: 600 }}>{r.vehicle}</div>
+              </div>
+              <Icon name="chevron-right" size={18} style={{ color: "var(--fg-3)" }} />
+            </div>
+          ))}
+        </div>
+
+        <div style={{ height: 12 }} />
+      </div>
+    </div>
+  );
+}
+
+function Stat({ label, value }) {
+  return (
+    <div style={{
+      background: "var(--bg-2)", border: "1px solid var(--border)",
+      borderRadius: 12, padding: "10px 12px"
+    }}>
+      <div style={{ fontSize: 11, color: "var(--fg-3)", fontWeight: 600 }}>{label}</div>
+      <div className="num" style={{ fontWeight: 700, fontSize: 15, marginTop: 2 }}>{value}</div>
+    </div>
+  );
+}
+
+/* ---------------- 3. CHECKOUT ---------------- */
+function ScreenCheckout({ back, onConfirm }) {
+  const [vehicleId, setVehicleId] = useState("v1");
+  const [odo, setOdo] = useState("18420");
+  const [purpose, setPurpose] = useState("Visita técnica ao cliente Distribuidora Athos — entrega de amostras e verificação de estoque na filial Sarandi.");
+  const [destination, setDestination] = useState("Av. Hortênsias, 1820 — Sarandi-PR");
+  const available = VEHICLES.filter(v => v.status === "available");
+
+  return (
+    <div className="screen">
+      <StatusBar />
+      <ScreenHeader title="Check-out de veículo" back={back} />
+      <div className="screen-body" style={{ padding: "0 20px 24px" }}>
+
+        <div style={{ fontSize: 12, fontWeight: 700, color: "var(--fg-2)", letterSpacing: "0.06em" }}>VEÍCULO</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 10 }}>
+          {available.map(v => {
+            const sel = vehicleId === v.id;
+            return (
+              <button key={v.id} onClick={() => setVehicleId(v.id)} className="tap"
+                style={{
+                  display: "flex", alignItems: "center", gap: 12, padding: 14,
+                  borderRadius: 14, textAlign: "left",
+                  background: sel ? "color-mix(in oklab, var(--primary) 8%, var(--card))" : "var(--card)",
+                  border: "1px solid " + (sel ? "var(--primary)" : "var(--border)"),
+                  boxShadow: sel ? "0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent)" : "var(--shadow)"
+                }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 10, background: "var(--bg-2)",
+                  display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg-2)"
+                }}>
+                  <Icon name="truck" size={22} />
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700 }}>{v.model}</div>
+                  <div className="mono" style={{ fontSize: 12, color: "var(--fg-2)", marginTop: 1, fontWeight: 600 }}>{v.plate} · {v.color}</div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+                  <span className="num" style={{ fontSize: 12, fontWeight: 600, color: "var(--fg-2)" }}>⛽ {v.fuel}%</span>
+                  <div style={{ width: 22, height: 22, borderRadius: 999,
+                    background: sel ? "var(--primary)" : "transparent",
+                    border: "2px solid " + (sel ? "var(--primary)" : "var(--border-2)"),
+                    display: "flex", alignItems: "center", justifyContent: "center"
+                  }}>
+                    {sel && <Icon name="check" size={14} stroke={3} style={{ color: "var(--primary-fg)" }} />}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div style={{ marginTop: 22, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "var(--fg-2)", marginBottom: 8 }}>Hodômetro inicial (km)</div>
+            <input className="field mono num" value={odo} onChange={e => setOdo(e.target.value)} />
+          </div>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "var(--fg-2)", marginBottom: 8 }}>Combustível atual</div>
+            <div className="field" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <Icon name="fuel" size={16} stroke={2} style={{ color: "var(--fg-3)" }} />
+              <span className="num" style={{ fontWeight: 600 }}>78%</span>
+              <div style={{ flex: 1, height: 6, borderRadius: 999, background: "var(--border)" }}>
+                <div style={{ width: "78%", height: "100%", borderRadius: 999, background: "var(--primary)" }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 18 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: "var(--fg-2)", marginBottom: 8 }}>Destino previsto</div>
+          <div style={{ position: "relative" }}>
+            <Icon name="map-pin" size={18} style={{ position: "absolute", left: 14, top: 14, color: "var(--fg-3)" }} />
+            <input className="field" style={{ paddingLeft: 42 }} value={destination} onChange={e => setDestination(e.target.value)} />
+          </div>
+        </div>
+
+        <div style={{ marginTop: 18 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: "var(--fg-2)", marginBottom: 8, display: "flex", justifyContent: "space-between" }}>
+            <span>Justificativa da saída</span>
+            <span style={{ fontWeight: 500, color: "var(--fg-3)" }}>{purpose.length}/280</span>
+          </div>
+          <textarea className="field" rows={4} value={purpose} maxLength={280} onChange={e => setPurpose(e.target.value)} style={{ resize: "none", lineHeight: 1.45 }} />
+        </div>
+
+        <div style={{ marginTop: 18 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: "var(--fg-2)", marginBottom: 8 }}>Foto do veículo (estado de saída)</div>
+          <button className="tap" style={{
+            width: "100%", borderRadius: 14, border: "1.5px dashed var(--border-2)",
+            background: "var(--bg-2)", padding: 18, display: "flex", flexDirection: "column",
+            alignItems: "center", gap: 6, color: "var(--fg-2)"
+          }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: 12,
+              background: "var(--card)", border: "1px solid var(--border)",
+              display: "flex", alignItems: "center", justifyContent: "center"
+            }}>
+              <Icon name="camera" size={20} stroke={1.8} />
+            </div>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>Tirar foto frontal + traseira</div>
+            <div style={{ fontSize: 11, color: "var(--fg-3)" }}>Obrigatório para liberar a saída</div>
+          </button>
+        </div>
+
+        <button onClick={onConfirm} className="btn btn-primary tap" style={{ width: "100%", marginTop: 24, height: 54, fontSize: 16 }}>
+          <Icon name="play" size={18} stroke={2.4} /> Iniciar uso
+        </button>
+        <button onClick={back} className="btn btn-ghost tap" style={{ width: "100%", marginTop: 10, height: 48 }}>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- 4. MAP REAL TIME ---------------- */
+function ScreenMap({ back, go }) {
+  const [time, setTime] = useState("02:14");
+  const [dist, setDist] = useState(47.3);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setDist(d => Math.round((d + 0.1) * 10) / 10);
+    }, 1500);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div className="screen" style={{ background: "var(--bg-2)" }}>
+      {/* Map fills entire screen */}
+      <div style={{ position: "absolute", inset: 0 }}>
+        <StylizedMap />
+      </div>
+
+      <StatusBar />
+
+      <div style={{ position: "absolute", top: 56, left: 16, right: 16, display: "flex", justifyContent: "space-between", gap: 8, zIndex: 6 }}>
+        <button onClick={back} className="tap" style={{
+          width: 40, height: 40, borderRadius: 12, background: "var(--card)", border: "1px solid var(--border)",
+          display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)",
+          boxShadow: "var(--shadow)"
+        }}>
+          <Icon name="chevron-left" size={20} />
+        </button>
+        <div className="card" style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 12px", height: 40 }}>
+          <span className="live-dot" />
+          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ok)", letterSpacing: "0.06em" }}>AO VIVO</span>
+          <span style={{ width: 1, height: 16, background: "var(--border)" }} />
+          <span className="num" style={{ fontSize: 12, fontWeight: 600, color: "var(--fg-2)" }}>1 veículo</span>
+        </div>
+        <button className="tap" style={{
+          width: 40, height: 40, borderRadius: 12, background: "var(--card)", border: "1px solid var(--border)",
+          display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)", boxShadow: "var(--shadow)"
+        }}>
+          <Icon name="layers" size={18} />
+        </button>
+      </div>
+
+      {/* zoom controls */}
+      <div style={{ position: "absolute", right: 16, top: 200, zIndex: 6, display: "flex", flexDirection: "column", gap: 8 }}>
+        <button className="tap card" style={{ width: 40, height: 40, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)" }}>
+          <Icon name="plus" size={18} />
+        </button>
+        <button className="tap card" style={{ width: 40, height: 40, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)" }}>
+          <Icon name="minus" size={18} />
+        </button>
+        <button className="tap card" style={{ width: 40, height: 40, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--primary)" }}>
+          <Icon name="locate" size={18} />
+        </button>
+      </div>
+
+      {/* Bottom card */}
+      <div style={{ position: "absolute", left: 12, right: 12, bottom: 16, zIndex: 6 }}>
+        <div className="card" style={{ padding: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: 999,
+              background: "var(--primary-soft)", color: "var(--primary-soft-fg)",
+              display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700
+            }}>
+              CM
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ fontWeight: 700 }}>Carolina Meneghetti</div>
+                <span className="chip" style={{ background: "var(--ok-soft)", color: "var(--ok)" }}>
+                  <span className="live-dot" style={{ width: 6, height: 6 }} /> Online
+                </span>
+              </div>
+              <div className="mono" style={{ fontSize: 12, color: "var(--fg-2)", fontWeight: 600, marginTop: 2 }}>
+                VW Saveiro · PRD-7H21
+              </div>
+            </div>
+            <button className="tap" style={{
+              width: 38, height: 38, borderRadius: 10, background: "var(--bg-2)",
+              display: "flex", alignItems: "center", justifyContent: "center", color: "var(--primary)"
+            }}>
+              <Icon name="phone" size={16} stroke={2.2} />
+            </button>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginTop: 14 }}>
+            <Stat label="Em uso" value="2h 14m" />
+            <Stat label="Distância" value={dist.toFixed(1).replace(".", ",") + " km"} />
+            <Stat label="Vel. média" value="38 km/h" />
+          </div>
+
+          <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
+            <button onClick={() => go("trip")} className="btn btn-ghost tap" style={{ flex: 1 }}>
+              <Icon name="route" size={18} /> Ver rota
+            </button>
+            <button className="btn btn-primary tap" style={{ flex: 1 }}>
+              <Icon name="message-square-text" size={18} /> Mensagem
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- 5. HISTÓRICO ---------------- */
+function ScreenHistory({ go }) {
+  const [filter, setFilter] = useState("all");
+  const trips = filter === "all" ? TRIPS : TRIPS.filter(t => t.status === filter);
+  return (
+    <div className="screen">
+      <StatusBar />
+      <ScreenHeader
+        title="Trajetos"
+        subtitle={`${TRIPS.length} viagens · últimos 7 dias`}
+        right={
+          <button className="tap" style={{
+            width: 38, height: 38, borderRadius: 12, background: "var(--bg-2)", border: "1px solid var(--border)",
+            display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)"
+          }}>
+            <Icon name="sliders-horizontal" size={18} />
+          </button>
+        }
+      />
+      <div style={{ padding: "0 20px 12px" }}>
+        <div className="seg" role="tablist">
+          {[
+            ["all", "Todos"],
+            ["in-progress", "Em andamento"],
+            ["completed", "Concluídos"],
+            ["suspicious", "Suspeitos"],
+          ].map(([id, label]) => (
+            <button key={id} className={filter === id ? "active" : ""} onClick={() => setFilter(id)}>{label}</button>
+          ))}
+        </div>
+      </div>
+      <div className="screen-body" style={{ padding: "0 20px 20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {trips.map(t => (
+            <button key={t.id} className="card tap" onClick={() => go("trip", t.id)} style={{ padding: 14, textAlign: "left" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
+                  <div style={{
+                    width: 36, height: 36, borderRadius: 999,
+                    background: "var(--primary-soft)", color: "var(--primary-soft-fg)",
+                    display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700
+                  }}>{t.driver.split(" ").map(s => s[0]).slice(0, 2).join("")}</div>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.driver}</div>
+                    <div className="mono" style={{ fontSize: 11, color: "var(--fg-2)", fontWeight: 600 }}>{t.vehicle}</div>
+                  </div>
+                </div>
+                <StatusChip status={t.status} />
+              </div>
+
+              <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 4 }}>
+                <RouteLine icon="circle" text={t.from} dim />
+                <RouteLine icon="map-pin" text={t.to} bold={t.status === "suspicious"} />
+              </div>
+
+              <div style={{ marginTop: 12, display: "flex", justifyContent: "space-between", alignItems: "center", color: "var(--fg-2)" }}>
+                <div className="num" style={{ fontSize: 12, display: "flex", gap: 12 }}>
+                  <span><Icon name="calendar" size={12} /> {t.date} · {t.time}</span>
+                </div>
+                <div className="num" style={{ fontSize: 12, display: "flex", gap: 10, fontWeight: 600 }}>
+                  <span>{t.duration}</span>
+                  <span style={{ color: "var(--fg-3)" }}>·</span>
+                  <span>{t.distance.toString().replace(".", ",")} km</span>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RouteLine({ icon, text, dim, bold }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, color: dim ? "var(--fg-3)" : "var(--fg-2)" }}>
+      <Icon name={icon} size={12} stroke={2} />
+      <span style={{ fontSize: 12, fontWeight: bold ? 700 : 500, color: bold ? "var(--warn)" : undefined, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{text}</span>
+    </div>
+  );
+}
+
+/* ---------------- 6. TRIP DETAIL + AI ---------------- */
+function ScreenTripDetail({ tripId, back }) {
+  const trip = TRIPS.find(t => t.id === tripId) || TRIPS[2]; // suspicious by default
+  const isSuspicious = trip.status === "suspicious";
+  return (
+    <div className="screen">
+      {/* map at top */}
+      <div style={{ height: 320, position: "relative" }}>
+        <StylizedMap withRoute />
+        <StatusBar />
+        <div style={{ position: "absolute", top: 56, left: 16, right: 16, display: "flex", justifyContent: "space-between", zIndex: 6 }}>
+          <button onClick={back} className="tap" style={{
+            width: 40, height: 40, borderRadius: 12, background: "var(--card)", border: "1px solid var(--border)",
+            display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)", boxShadow: "var(--shadow)"
+          }}>
+            <Icon name="chevron-left" size={20} />
+          </button>
+          <button className="tap card" style={{ height: 40, padding: "0 12px", display: "flex", alignItems: "center", gap: 6, color: "var(--fg)" }}>
+            <Icon name="share-2" size={16} /> <span style={{ fontSize: 13, fontWeight: 600 }}>Compartilhar</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="screen-body" style={{ padding: "16px 20px 24px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-0.01em" }}>{trip.driver}</div>
+            <div className="mono" style={{ fontSize: 12, color: "var(--fg-2)", fontWeight: 600 }}>{trip.vehicle}</div>
+            <div style={{ fontSize: 12, color: "var(--fg-3)", marginTop: 2 }}>{trip.date} · {trip.time}</div>
+          </div>
+          <StatusChip status={trip.status} />
+        </div>
+
+        <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 6, padding: 12, background: "var(--bg-2)", borderRadius: 12, border: "1px solid var(--border)" }}>
+          <RouteLine icon="circle" text={trip.from} dim />
+          <RouteLine icon="map-pin" text={trip.to} bold={isSuspicious} />
+        </div>
+
+        {/* AI summary card */}
+        <div className="card pop" style={{
+          marginTop: 16, padding: 16,
+          background: "linear-gradient(180deg, color-mix(in oklab, var(--primary) 7%, var(--card)) 0%, var(--card) 80%)",
+          border: "1px solid color-mix(in oklab, var(--primary) 25%, var(--border))",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{
+              width: 28, height: 28, borderRadius: 8,
+              background: "var(--primary)", color: "var(--primary-fg)",
+              display: "flex", alignItems: "center", justifyContent: "center"
+            }}>
+              <Icon name="sparkles" size={16} stroke={2.2} />
+            </div>
+            <div style={{ fontWeight: 700, fontSize: 14 }} className="ai-gradient-text">Resumo IA</div>
+            <span className="chip" style={{ marginLeft: "auto", background: "var(--bg-2)", color: "var(--fg-3)", fontSize: 10 }}>BETA</span>
+          </div>
+
+          <ul style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 10 }}>
+            {(isSuspicious ? [
+              { icon: "alert-triangle", color: "var(--warn)", text: "Destino real (Mandaguaçu) divergente do informado (Maringá)." },
+              { icon: "clock", color: "var(--info)", text: "Parada de 18 min em local não previsto — Posto Shell, BR-376." },
+              { icon: "gauge", color: "var(--warn)", text: "Pico de 102 km/h em via urbana às 16:48 (limite 60)." },
+              { icon: "fuel", color: "var(--fg-2)", text: "Consumo médio: 11,4 km/l — dentro da faixa esperada." },
+            ] : [
+              { icon: "check-circle-2", color: "var(--ok)", text: "Trajeto compatível com destino informado." },
+              { icon: "clock", color: "var(--info)", text: "Sem paradas não previstas — viagem direta." },
+              { icon: "gauge", color: "var(--ok)", text: "Velocidade dentro do esperado para a via." },
+              { icon: "fuel", color: "var(--fg-2)", text: "Consumo médio: 13,2 km/l — eficiência boa." },
+            ]).map((b, i) => (
+              <li key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <div style={{ marginTop: 1, color: b.color, flexShrink: 0 }}>
+                  <Icon name={b.icon} size={16} stroke={2} />
+                </div>
+                <div style={{ fontSize: 13, lineHeight: 1.45, color: "var(--fg)" }}>{b.text}</div>
+              </li>
+            ))}
+          </ul>
+
+          <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: 11, color: "var(--fg-3)" }}>Gerado às {trip.time} · modelo route-v3</span>
+            <button className="tap" style={{ fontSize: 12, color: "var(--primary)", fontWeight: 600 }}>Marcar como revisado</button>
+          </div>
+        </div>
+
+        {/* Metrics */}
+        <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10 }}>
+          <Stat label="Distância" value={trip.distance.toString().replace(".", ",") + " km"} />
+          <Stat label="Duração" value={trip.duration} />
+          <Stat label="Vel. média" value={trip.avgSpeed + " km/h"} />
+        </div>
+
+        {/* Driving score */}
+        <div className="card" style={{ marginTop: 14, padding: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div>
+              <div style={{ fontSize: 12, color: "var(--fg-3)", fontWeight: 600 }}>SCORE DE DIREÇÃO</div>
+              <div className="num" style={{ fontWeight: 700, fontSize: 28, marginTop: 2, letterSpacing: "-0.02em" }}>
+                {isSuspicious ? "62" : "88"}<span style={{ color: "var(--fg-3)", fontSize: 14, fontWeight: 600 }}>/100</span>
+              </div>
+            </div>
+            <ScoreRing value={isSuspicious ? 62 : 88} />
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginTop: 14 }}>
+            <ScoreItem icon="zap" label="Acelerações" v={isSuspicious ? "3" : "0"} bad={isSuspicious} />
+            <ScoreItem icon="octagon" label="Frenagens" v={isSuspicious ? "5" : "1"} bad={isSuspicious} />
+            <ScoreItem icon="gauge" label="Excesso vel." v={isSuspicious ? "2" : "0"} bad={isSuspicious} />
+          </div>
+        </div>
+
+        <div style={{ height: 12 }} />
+      </div>
+    </div>
+  );
+}
+
+function ScoreRing({ value }) {
+  const r = 26, c = 2 * Math.PI * r;
+  const off = c - (value / 100) * c;
+  const color = value >= 80 ? "var(--ok)" : value >= 60 ? "var(--warn)" : "var(--danger)";
+  return (
+    <svg width="64" height="64" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r={r} stroke="var(--border)" strokeWidth="6" fill="none" />
+      <circle cx="32" cy="32" r={r} stroke={color} strokeWidth="6" fill="none"
+        strokeDasharray={c} strokeDashoffset={off} strokeLinecap="round"
+        transform="rotate(-90 32 32)" />
+    </svg>
+  );
+}
+function ScoreItem({ icon, label, v, bad }) {
+  return (
+    <div style={{ background: "var(--bg-2)", borderRadius: 12, padding: 10, display: "flex", flexDirection: "column", gap: 4 }}>
+      <Icon name={icon} size={14} stroke={2} style={{ color: bad ? "var(--warn)" : "var(--fg-2)" }} />
+      <div className="num" style={{ fontWeight: 700, fontSize: 14 }}>{v}</div>
+      <div style={{ fontSize: 10, color: "var(--fg-3)", fontWeight: 600 }}>{label}</div>
+    </div>
+  );
+}
+
+/* ---------------- 7. ADMIN ---------------- */
+function ScreenAdmin({ go, theme }) {
+  const counts = {
+    "in-use": VEHICLES.filter(v => v.status === "in-use").length,
+    available: VEHICLES.filter(v => v.status === "available").length,
+    offline: VEHICLES.filter(v => v.status === "offline").length,
+    alerts: ALERTS.filter(a => a.severity === "high").length,
+  };
+  return (
+    <div className="screen">
+      <StatusBar />
+      <ScreenHeader
+        title="Painel da frota"
+        subtitle="Visão gestor · Maringá-PR"
+        right={
+          <button className="tap" onClick={() => theme.setDark(d => !d)} style={{
+            width: 38, height: 38, borderRadius: 12, background: "var(--bg-2)", border: "1px solid var(--border)",
+            display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)"
+          }}>
+            <Icon name={theme.dark ? "sun" : "moon"} size={18} />
+          </button>
+        }
+      />
+      <div className="screen-body" style={{ padding: "0 20px 24px" }}>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 10 }}>
+          <KpiCard label="Em uso" value={counts["in-use"]} accent="var(--info)" icon="navigation" trend="+1 vs ontem" />
+          <KpiCard label="Disponíveis" value={counts.available} accent="var(--ok)" icon="circle-check" />
+          <KpiCard label="Offline" value={counts.offline} accent="var(--danger)" icon="wifi-off" trend="atenção" trendBad />
+          <KpiCard label="Alertas críticos" value={counts.alerts} accent="var(--warn)" icon="triangle-alert" />
+        </div>
+
+        {/* Mini chart */}
+        <div className="card" style={{ marginTop: 14, padding: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+            <div>
+              <div style={{ fontSize: 12, color: "var(--fg-3)", fontWeight: 600 }}>UTILIZAÇÃO DA FROTA</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 4 }}>
+                <span className="num" style={{ fontSize: 24, fontWeight: 700, letterSpacing: "-0.02em" }}>72%</span>
+                <span style={{ fontSize: 12, color: "var(--ok)", fontWeight: 600 }}>↑ 4 pp</span>
+              </div>
+            </div>
+            <div className="seg">
+              <button className="active">7d</button>
+              <button>30d</button>
+              <button>90d</button>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 70, marginTop: 14 }}>
+            {[42, 58, 51, 64, 70, 81, 72].map((v, i) => (
+              <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                <div style={{
+                  width: "100%", height: v + "%", borderRadius: 4,
+                  background: i === 6 ? "var(--primary)" : "var(--primary-soft)"
+                }} />
+                <span style={{ fontSize: 9, color: "var(--fg-3)", fontWeight: 600 }}>{["S","T","Q","Q","S","S","D"][i]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Vehicles list */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 22 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: "var(--fg-2)", letterSpacing: "0.06em" }}>VEÍCULOS ({VEHICLES.length})</div>
+          <button className="tap" style={{ fontSize: 12, color: "var(--primary)", fontWeight: 600 }}>Filtrar</button>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 10 }}>
+          {VEHICLES.map(v => (
+            <div key={v.id} className="card" style={{ padding: 12, display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: 10, background: "var(--bg-2)",
+                display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg-2)"
+              }}>
+                <Icon name="truck" size={18} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
+                  <span className="mono" style={{ fontWeight: 700, fontSize: 13 }}>{v.plate}</span>
+                  <span style={{ color: "var(--fg-3)", fontSize: 12 }}>·</span>
+                  <span style={{ fontSize: 13, color: "var(--fg-2)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{v.model.split(" ").slice(0,2).join(" ")}</span>
+                </div>
+                <div style={{ fontSize: 11, color: "var(--fg-3)", marginTop: 2 }}>
+                  {v.driver ? "Com " + v.driver : "Sem motorista · " + v.color}
+                </div>
+              </div>
+              <StatusChip status={v.status} />
+            </div>
+          ))}
+        </div>
+
+        {/* alerts preview */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 22 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: "var(--fg-2)", letterSpacing: "0.06em" }}>ALERTAS RECENTES</div>
+          <button className="tap" onClick={() => go("alerts")} style={{ fontSize: 12, color: "var(--primary)", fontWeight: 600 }}>Ver todos</button>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 10 }}>
+          {ALERTS.slice(0, 2).map(a => <AlertRow key={a.id} a={a} compact />)}
+        </div>
+
+        <div style={{ height: 12 }} />
+      </div>
+    </div>
+  );
+}
+
+function KpiCard({ label, value, accent, icon, trend, trendBad }) {
+  return (
+    <div className="card" style={{ padding: 14 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{
+          width: 32, height: 32, borderRadius: 9,
+          background: "color-mix(in oklab, " + accent + " 12%, transparent)",
+          color: accent,
+          display: "flex", alignItems: "center", justifyContent: "center"
+        }}>
+          <Icon name={icon} size={16} stroke={2.2} />
+        </div>
+        {trend && <span style={{ fontSize: 10, fontWeight: 700, color: trendBad ? "var(--danger)" : "var(--fg-3)", letterSpacing: "0.04em" }}>{trend.toUpperCase()}</span>}
+      </div>
+      <div style={{ marginTop: 10, fontSize: 11, fontWeight: 600, color: "var(--fg-3)", letterSpacing: "0.06em" }}>{label.toUpperCase()}</div>
+      <div className="num" style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.02em", marginTop: 2 }}>{value}</div>
+    </div>
+  );
+}
+
+/* ---------------- 8. ALERTS ---------------- */
+const ALERT_META = {
+  offline:     { icon: "wifi-off", color: "var(--danger)", soft: "var(--danger-soft)" },
+  route:       { icon: "route-off", color: "var(--warn)", soft: "var(--warn-soft)" },
+  geofence:    { icon: "shield-alert", color: "var(--warn)", soft: "var(--warn-soft)" },
+  maintenance: { icon: "wrench", color: "var(--info)", soft: "var(--info-soft)" },
+  speed:       { icon: "gauge", color: "var(--warn)", soft: "var(--warn-soft)" },
+};
+function AlertRow({ a, compact, onAck }) {
+  const meta = ALERT_META[a.type];
+  return (
+    <div className="card" style={{ padding: 14, display: "flex", gap: 12, alignItems: "flex-start" }}>
+      <div style={{
+        width: 38, height: 38, borderRadius: 10,
+        background: meta.soft, color: meta.color,
+        display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+      }}>
+        <Icon name={meta.icon} size={18} stroke={2} />
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <SeverityDot s={a.severity} />
+          <span style={{ fontSize: 14, fontWeight: 700, lineHeight: 1.2 }}>{a.title}</span>
+        </div>
+        <div style={{ fontSize: 12, color: "var(--fg-3)", marginTop: 4 }}>{a.subtitle}</div>
+        {!compact && (
+          <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+            <button className="btn btn-ghost tap" style={{ padding: "8px 12px", fontSize: 12 }}>
+              <Icon name="map-pin" size={14} /> Ver mapa
+            </button>
+            <button onClick={onAck} className="btn btn-ghost tap" style={{ padding: "8px 12px", fontSize: 12 }}>
+              <Icon name="check" size={14} /> Reconhecer
+            </button>
+          </div>
+        )}
+      </div>
+      <div style={{ fontSize: 11, color: "var(--fg-3)", whiteSpace: "nowrap", flexShrink: 0 }}>{a.time}</div>
+    </div>
+  );
+}
+
+function ScreenAlerts() {
+  const [filter, setFilter] = useState("all");
+  const [acked, setAcked] = useState([]);
+  const list = ALERTS.filter(a => !acked.includes(a.id)).filter(a => {
+    if (filter === "all") return true;
+    if (filter === "high") return a.severity === "high";
+    return a.type === filter;
+  });
+  return (
+    <div className="screen">
+      <StatusBar />
+      <ScreenHeader title="Alertas" subtitle={list.length + " ativos · " + ALERTS.filter(a => a.severity === "high").length + " críticos"}
+        right={
+          <button className="tap" style={{
+            width: 38, height: 38, borderRadius: 12, background: "var(--bg-2)", border: "1px solid var(--border)",
+            display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)"
+          }}>
+            <Icon name="check-check" size={18} />
+          </button>
+        }
+      />
+
+      <div style={{ padding: "0 20px 12px", display: "flex", gap: 8, overflowX: "auto", scrollbarWidth: "none" }}>
+        {[
+          ["all", "Todos"],
+          ["high", "Críticos"],
+          ["offline", "Offline"],
+          ["route", "Rota"],
+          ["geofence", "Cerca"],
+          ["maintenance", "Manutenção"],
+        ].map(([id, label]) => (
+          <button key={id} onClick={() => setFilter(id)} className="tap"
+            style={{
+              padding: "6px 12px", borderRadius: 999, fontSize: 12, fontWeight: 600,
+              background: filter === id ? "var(--primary)" : "var(--bg-2)",
+              color: filter === id ? "var(--primary-fg)" : "var(--fg-2)",
+              border: "1px solid " + (filter === id ? "var(--primary)" : "var(--border)"),
+              whiteSpace: "nowrap"
+            }}>{label}</button>
+        ))}
+      </div>
+
+      <div className="screen-body" style={{ padding: "0 20px 20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {list.map(a => (
+            <AlertRow key={a.id} a={a} onAck={() => setAcked(prev => [...prev, a.id])} />
+          ))}
+          {list.length === 0 && (
+            <div className="card" style={{ padding: 32, textAlign: "center" }}>
+              <Icon name="check-circle-2" size={32} stroke={1.5} style={{ color: "var(--ok)" }} />
+              <div style={{ fontWeight: 700, marginTop: 10 }}>Tudo em ordem</div>
+              <div style={{ fontSize: 12, color: "var(--fg-3)", marginTop: 4 }}>Nenhum alerta ativo no momento.</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- App Shell / Router ---------------- */
+function App() {
+  const [route, setRoute] = useState("login"); // login | home | checkout | map | history | trip | admin | alerts
+  const [tab, setTab] = useState("home");
+  const [tripId, setTripId] = useState("t1");
+  const [vehicleInUse, setVehicleInUse] = useState(true);
+  const theme = useTheme();
+
+  const go = (r, payload) => {
+    if (r === "trip") setTripId(payload || "t3");
+    setRoute(r);
+    if (["home","map","history","alerts","admin"].includes(r)) setTab(r);
+  };
+
+  const showNav = ["home","map","history","alerts","admin"].includes(route);
+
+  // simple key prop for transition
+  const screen = useMemo(() => {
+    switch (route) {
+      case "login":    return <ScreenLogin onLogin={() => { setRoute("home"); setTab("home"); }} />;
+      case "home":     return <ScreenHome go={go} vehicleInUse={vehicleInUse} theme={theme} />;
+      case "checkout": return <ScreenCheckout back={() => go("home")} onConfirm={() => { setVehicleInUse(true); go("map"); }} />;
+      case "checkin":  return <ScreenCheckout back={() => go("home")} onConfirm={() => { setVehicleInUse(false); go("home"); }} />;
+      case "map":      return <ScreenMap back={() => go("home")} go={go} />;
+      case "history":  return <ScreenHistory go={go} />;
+      case "trip":     return <ScreenTripDetail tripId={tripId} back={() => go("history")} />;
+      case "admin":    return <ScreenAdmin go={go} theme={theme} />;
+      case "alerts":   return <ScreenAlerts />;
+      default: return null;
+    }
+  }, [route, tripId, vehicleInUse, theme.dark]);
+
+  const onTab = (t) => {
+    setTab(t);
+    setRoute(t);
+  };
+
+  return (
+    <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" }}>
+      <div key={route} style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" }} className="screen-enter screen-enter-active">
+        {screen}
+      </div>
+      {showNav && (
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 10 }}>
+          <BottomNav active={tab} onChange={onTab} />
+          <div className="home-indicator" />
+        </div>
+      )}
+      {!showNav && route !== "login" && <div className="home-indicator" />}
+      {route === "login" && <div className="home-indicator" />}
+    </div>
+  );
+}
+
+/* ---------------- Top-level ---------------- */
+function Root() {
+  return (
+    <ThemeProvider>
+      <Page />
+    </ThemeProvider>
+  );
+}
+
+function Page() {
+  const theme = useTheme();
+  return (
+    <div className="device-stage" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, color: "rgba(255,255,255,0.55)", fontSize: 12 }}>
+          <Icon name="shield-check" size={14} />
+          <span style={{ fontWeight: 600, letterSpacing: "0.06em" }}>FLEETGUARD · PROTÓTIPO</span>
+          <span style={{ opacity: 0.4 }}>·</span>
+          <span>iPhone 14 · 390×844</span>
+          <span style={{ opacity: 0.4 }}>·</span>
+          <button onClick={() => theme.setDark(d => !d)} className="tap" style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            padding: "4px 10px", borderRadius: 999, color: "rgba(255,255,255,0.85)",
+            background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)"
+          }}>
+            <Icon name={theme.dark ? "sun" : "moon"} size={12} />
+            {theme.dark ? "Light mode" : "Dark mode"}
+          </button>
+        </div>
+
+        <div className="iphone">
+          <div className="iphone-notch" />
+          <div className="iphone-screen">
+            <App />
+          </div>
+        </div>
+
+        <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, textAlign: "center", maxWidth: 420 }}>
+          Toque nos botões para navegar. Fluxos completos: login → home → check-out → mapa · home → mapa · histórico → detalhe IA · home → alertas.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Root />);
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="646" height="191" viewBox="0 0 646 191" role="img" aria-labelledby="title desc">
+  <title id="title">Disponível no Google Play</title>
+  <desc id="desc">Selo de chamada para baixar o aplicativo no Google Play.</desc>
+  <rect width="646" height="191" rx="26" fill="#111516"/>
+  <rect x="3.5" y="3.5" width="639" height="184" rx="22.5" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="7"/>
+  <path d="M112.4 91.6 44.6 28.9c-3.4 3.7-5.4 9-5.4 15.5v102.2c0 6.5 2 11.8 5.4 15.5l67.8-70.5Z" fill="#25d366"/>
+  <path d="m132.8 112.8-20.4-21.2-67.8 70.5c5.3 5.6 13.6 6.3 23 1.1l65.2-50.4Z" fill="#fbbc04"/>
+  <path d="m132.8 70.4-65.2-50.4c-9.4-5.2-17.7-4.5-23 1.1l67.8 70.5 20.4-21.2Z" fill="#4285f4"/>
+  <path d="m190.4 94.2-57.6-23.8-20.4 21.2 20.4 21.2 57.6-23.8c11.8-6.5 11.8-18.3 0-24.8Z" fill="#ea4335"/>
+  <text x="230" y="69" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="600">Disponível no</text>
+  <text x="230" y="128" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="800">Google Play</text>
+</svg>

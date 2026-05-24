@@ -1,0 +1,196 @@
+---
+const useCases = [
+	{
+		title: "Frotas corporativas",
+		description: "Evite uso indevido, acompanhe veículos compartilhados e mantenha evidências de cada retirada.",
+		icon: "building"
+	},
+	{
+		title: "Serviços de campo",
+		description: "Acompanhe deslocamentos de equipes técnicas, chegada ao cliente e paradas fora do planejado.",
+		icon: "users"
+	},
+	{
+		title: "Logística urbana",
+		description: "Monitore entregas, compare rota prevista com rota realizada e responda rápido a incidentes.",
+		icon: "truck"
+	}
+];
+---
+<section id="use-cases" class="use-cases">
+	<div class="container">
+		<div class="section-header">
+			<p class="section-kicker">Aplicações</p>
+			<h2>Controle para operações onde cada veículo precisa prestar contas.</h2>
+			<p>Da frota administrativa à equipe de rua, o RastrIA cria um padrão único de visibilidade, registro e tomada de decisão.</p>
+		</div>
+
+		<div class="use-cases-grid">
+			{useCases.map((useCase) => (
+				<article class="use-case-card">
+					<div class="use-case-icon">
+						{useCase.icon === "building" && <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>}
+						{useCase.icon === "users" && <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
+						{useCase.icon === "truck" && <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-5l-4-4h-3v10Z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>}
+					</div>
+					<h3>{useCase.title}</h3>
+					<p>{useCase.description}</p>
+				</article>
+			))}
+		</div>
+
+		<div id="contact" class="cta-panel">
+			<div>
+				<p class="section-kicker">Próximo passo</p>
+				<h2>Apresente o RastrIA com uma landing mais forte e pronta para evoluir para captação.</h2>
+				<p>O protótipo já comunica o produto, mostra a operação e mantém tema claro/escuro consistente para demonstrações.</p>
+			</div>
+			<div class="cta-actions">
+				<a href="mailto:contato@rastria.com?subject=Demo%20RastrIA" class="btn cta-button">
+					Falar com especialista
+					<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.99 5.72a2 2 0 0 1-2.02 0L2 7"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
+				</a>
+				<article class="store-card">
+					<div>
+						<strong>App do motorista</strong>
+						<p>Em breve, link oficial do produto na loja.</p>
+					</div>
+					<a href="#" class="store-link" aria-label="Abrir página do RastrIA no Google Play">
+						<img src="/google-play-badge.svg" alt="Disponível no Google Play" width="646" height="191" loading="lazy" />
+					</a>
+				</article>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.use-cases {
+		background: var(--surface-soft);
+	}
+
+	.use-cases-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.use-case-card {
+		min-height: 220px;
+		padding: 1.35rem;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+	}
+
+	.use-case-icon {
+		width: 3.25rem;
+		height: 3.25rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 1.35rem;
+		color: var(--primary);
+		background: var(--primary-soft);
+		border-radius: var(--radius);
+	}
+
+	.use-case-card h3 {
+		margin-bottom: 0.75rem;
+		font-size: 1.18rem;
+	}
+
+	.cta-panel {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+		gap: 2rem;
+		align-items: center;
+		margin-top: 1rem;
+		padding: 2rem;
+		background:
+			linear-gradient(135deg, color-mix(in oklab, var(--primary) 22%, transparent), transparent 60%),
+			var(--surface);
+		border: 1px solid color-mix(in oklab, var(--primary) 32%, var(--border));
+		border-radius: var(--radius);
+		box-shadow: var(--shadow-strong);
+	}
+
+	.cta-panel h2 {
+		max-width: 760px;
+		margin-bottom: 0.8rem;
+		font-size: clamp(1.7rem, 3.2vw, 2.55rem);
+	}
+
+	.cta-panel p:last-child {
+		max-width: 680px;
+	}
+
+	.cta-button {
+		background: var(--fg);
+		color: var(--bg);
+	}
+
+	.cta-button:hover {
+		transform: translateY(-2px);
+	}
+
+	.cta-actions {
+		display: grid;
+		gap: 0.85rem;
+	}
+
+	.store-card {
+		display: grid;
+		gap: 0.85rem;
+		justify-items: start;
+		padding: 1rem;
+		background: color-mix(in oklab, var(--surface) 88%, var(--surface-soft));
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+	}
+
+	.store-card strong {
+		display: block;
+		margin-bottom: 0.25rem;
+		color: var(--fg);
+		font-size: 0.98rem;
+	}
+
+	.store-card p {
+		font-size: 0.88rem;
+		line-height: 1.4;
+	}
+
+	.store-link {
+		display: block;
+		width: min(100%, 10rem);
+		border-radius: var(--radius);
+		transition: transform 0.2s ease, opacity 0.2s ease;
+	}
+
+	.store-link:hover {
+		transform: translateY(-2px);
+		opacity: 0.94;
+	}
+
+	.store-link img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: var(--radius);
+	}
+
+	@media (max-width: 860px) {
+		.use-cases-grid,
+		.cta-panel {
+			grid-template-columns: 1fr;
+		}
+
+		.cta-panel {
+			padding: 1.5rem;
+		}
+	}
+</style>

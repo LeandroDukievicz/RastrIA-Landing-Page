@@ -1,0 +1,144 @@
+---
+const steps = [
+	{
+		number: "01",
+		title: "Retirada validada",
+		description: "O motorista informa destino, veículo, hodômetro, combustível e evidências no app antes de sair."
+	},
+	{
+		number: "02",
+		title: "Viagem monitorada",
+		description: "GPS e eventos de condução alimentam o painel para mostrar status, rota, paradas e alertas."
+	},
+	{
+		number: "03",
+		title: "IA interpreta o trajeto",
+		description: "A plataforma compara o ocorrido com a política da empresa e resume desvios ou pontos de atenção."
+	},
+	{
+		number: "04",
+		title: "Gestor decide com contexto",
+		description: "Relatórios, ocorrências e histórico ficam prontos para auditoria, cobrança interna ou melhoria operacional."
+	}
+];
+---
+<section id="how-it-works" class="how-it-works">
+	<div class="container workflow">
+		<div class="workflow-copy">
+			<p class="section-kicker">Operação guiada</p>
+			<h2>Um fluxo simples para equipes que precisam controlar veículos todos os dias.</h2>
+			<p>O sistema foi desenhado para reduzir atrito para o motorista e aumentar rastreabilidade para o gestor, sem depender de planilhas, mensagens soltas ou conferência manual de trajetos.</p>
+		</div>
+		<div class="steps-list">
+			{steps.map((step) => (
+				<article class="step-card">
+					<span class="step-number">{step.number}</span>
+					<div>
+						<h3>{step.title}</h3>
+						<p>{step.description}</p>
+					</div>
+				</article>
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.how-it-works {
+		background: var(--bg);
+	}
+
+	.workflow {
+		display: grid;
+		grid-template-columns: minmax(0, 0.82fr) minmax(420px, 1fr);
+		gap: 4rem;
+		align-items: start;
+	}
+
+	.workflow-copy {
+		position: sticky;
+		top: 7rem;
+	}
+
+	.workflow-copy h2 {
+		font-size: clamp(2rem, 4.4vw, 3.25rem);
+		margin-bottom: 1.2rem;
+	}
+
+	.workflow-copy p:last-child {
+		font-size: 1.05rem;
+	}
+
+	.steps-list {
+		position: relative;
+		display: grid;
+		gap: 0.85rem;
+	}
+
+	.steps-list::before {
+		content: "";
+		position: absolute;
+		left: 1.65rem;
+		top: 1rem;
+		bottom: 1rem;
+		width: 2px;
+		background: linear-gradient(var(--primary), var(--border));
+	}
+
+	.step-card {
+		position: relative;
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 1rem;
+		padding: 1.15rem;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+	}
+
+	.step-number {
+		position: relative;
+		z-index: 1;
+		width: 3.1rem;
+		height: 3.1rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--primary);
+		color: var(--primary-fg);
+		border-radius: var(--radius);
+		font-weight: 850;
+		font-size: 0.95rem;
+	}
+
+	.step-card h3 {
+		margin: 0.2rem 0 0.45rem;
+		font-size: 1.15rem;
+	}
+
+	.step-card p {
+		font-size: 0.96rem;
+	}
+
+	@media (max-width: 900px) {
+		.workflow {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+
+		.workflow-copy {
+			position: static;
+		}
+	}
+
+	@media (max-width: 520px) {
+		.step-card {
+			grid-template-columns: 1fr;
+		}
+
+		.steps-list::before {
+			display: none;
+		}
+	}
+</style>

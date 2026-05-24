@@ -1,0 +1,209 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="RastrIA - gestão inteligente de frotas com rastreamento em tempo real, check-in de veículos e análise de trajetos por IA." />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#f7f9f8" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#111516" media="(prefers-color-scheme: dark)" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<script is:inline>
+			(() => {
+				const storedTheme = localStorage.getItem('theme');
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const theme = storedTheme === 'light' || storedTheme === 'dark'
+					? storedTheme
+					: prefersDark ? 'dark' : 'light';
+
+				document.documentElement.dataset.theme = theme;
+				document.documentElement.style.colorScheme = theme;
+			})();
+		</script>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+<style is:global>
+	:root {
+		--bg: oklch(0.985 0.006 165);
+		--bg-rgb: 247 249 248;
+		--surface: #ffffff;
+		--surface-soft: oklch(0.955 0.012 165);
+		--surface-raised: #ffffff;
+		--fg: oklch(0.205 0.018 175);
+		--fg-muted: oklch(0.455 0.018 175);
+		--fg-soft: oklch(0.61 0.014 175);
+		--primary: oklch(0.48 0.105 178);
+		--primary-fg: #ffffff;
+		--primary-soft: oklch(0.925 0.045 178);
+		--accent: oklch(0.64 0.145 72);
+		--accent-soft: oklch(0.945 0.055 72);
+		--danger: oklch(0.58 0.19 27);
+		--danger-soft: oklch(0.94 0.045 27);
+		--ok: oklch(0.58 0.14 150);
+		--border: oklch(0.88 0.012 175);
+		--border-strong: oklch(0.78 0.015 175);
+		--shadow: 0 1px 2px rgb(20 31 28 / 0.06), 0 16px 42px -28px rgb(20 31 28 / 0.28);
+		--shadow-strong: 0 22px 70px -36px rgb(20 31 28 / 0.42);
+		--radius: 8px;
+	}
+
+	:root[data-theme="dark"] {
+		--bg: oklch(0.165 0.014 175);
+		--bg-rgb: 17 21 22;
+		--surface: oklch(0.205 0.016 175);
+		--surface-soft: oklch(0.245 0.018 175);
+		--surface-raised: oklch(0.255 0.016 175);
+		--fg: oklch(0.95 0.008 165);
+		--fg-muted: oklch(0.76 0.012 165);
+		--fg-soft: oklch(0.61 0.013 165);
+		--primary: oklch(0.72 0.12 178);
+		--primary-fg: oklch(0.14 0.015 175);
+		--primary-soft: oklch(0.30 0.055 178);
+		--accent: oklch(0.78 0.15 72);
+		--accent-soft: oklch(0.31 0.06 72);
+		--danger: oklch(0.72 0.18 27);
+		--danger-soft: oklch(0.31 0.075 27);
+		--ok: oklch(0.72 0.15 150);
+		--border: oklch(0.34 0.016 175);
+		--border-strong: oklch(0.43 0.018 175);
+		--shadow: 0 1px 2px rgb(0 0 0 / 0.28), 0 18px 46px -28px rgb(0 0 0 / 0.72);
+		--shadow-strong: 0 28px 80px -36px rgb(0 0 0 / 0.82);
+	}
+
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	html {
+		font-family: 'Inter', system-ui, sans-serif;
+		background: var(--bg);
+		color: var(--fg);
+		scroll-behavior: smooth;
+		text-rendering: optimizeLegibility;
+	}
+
+	body {
+		min-height: 100vh;
+		background:
+			linear-gradient(180deg, color-mix(in oklab, var(--surface-soft) 56%, transparent), transparent 28rem),
+			var(--bg);
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		line-height: 1.1;
+		font-weight: 800;
+		letter-spacing: 0;
+		color: var(--fg);
+	}
+
+	p {
+		line-height: 1.6;
+		color: var(--fg-muted);
+	}
+
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	ul {
+		list-style: none;
+	}
+
+	.container {
+		width: min(100% - 2rem, 1180px);
+		margin: 0 auto;
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 2.75rem;
+		padding: 0.75rem 1rem;
+		border-radius: var(--radius);
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		border: 1px solid transparent;
+		gap: 0.5rem;
+		line-height: 1;
+		white-space: nowrap;
+	}
+
+	.btn-primary {
+		background: var(--primary);
+		color: var(--primary-fg);
+	}
+
+	.btn-primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 12px 28px -18px var(--primary);
+	}
+
+	.btn-outline {
+		background: color-mix(in oklab, var(--surface) 72%, transparent);
+		border: 1px solid var(--border);
+		color: var(--fg);
+	}
+
+	.btn-outline:hover {
+		background: var(--surface-soft);
+		border-color: var(--border-strong);
+	}
+
+	section {
+		padding: 6rem 0;
+	}
+
+	.section-kicker {
+		color: var(--primary);
+		font-size: 0.78rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0;
+		margin-bottom: 0.75rem;
+	}
+
+	.section-header {
+		max-width: 760px;
+		margin: 0 auto 3rem;
+		text-align: center;
+	}
+
+	.section-header h2 {
+		font-size: clamp(2rem, 4vw, 3rem);
+		margin-bottom: 1rem;
+	}
+
+	.section-header p {
+		font-size: 1.05rem;
+	}
+
+	@media (max-width: 720px) {
+		section {
+			padding: 4rem 0;
+		}
+
+		.btn {
+			width: 100%;
+		}
+	}
+</style>

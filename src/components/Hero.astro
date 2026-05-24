@@ -1,0 +1,595 @@
+---
+const metrics = [
+	{ value: "18%", label: "menos desvios de rota" },
+	{ value: "42 min", label: "economia por ocorrência" },
+	{ value: "24/7", label: "visibilidade operacional" }
+];
+---
+<section class="hero">
+	<div class="container hero-grid">
+		<div class="hero-content">
+			<p class="section-kicker">Gestão inteligente de frota</p>
+			<h1>RastrIA coloca localização, check-in e análise de trajetos no mesmo painel.</h1>
+			<p class="hero-copy">Controle o uso de veículos corporativos com dados de GPS, registros de retirada e devolução, alertas críticos e resumos automáticos por IA para cada viagem.</p>
+			<div class="hero-actions">
+				<a href="#contact" class="btn btn-primary">
+					Solicitar demo
+					<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+				</a>
+				<a href="#features" class="btn btn-outline">Explorar recursos</a>
+			</div>
+			<div class="hero-metrics" aria-label="Indicadores da plataforma">
+				{metrics.map((metric) => (
+					<div class="metric">
+						<strong>{metric.value}</strong>
+						<span>{metric.label}</span>
+					</div>
+				))}
+			</div>
+		</div>
+
+		<div class="product-stage" aria-label="Prévia visual do painel RastrIA">
+			<div class="dashboard-window">
+				<div class="window-bar">
+					<span></span>
+					<span></span>
+					<span></span>
+					<strong>Operação em tempo real</strong>
+				</div>
+				<div class="dashboard-body">
+					<div class="map-panel">
+						<div class="route-line route-one"></div>
+						<div class="route-line route-two"></div>
+						<div class="vehicle-pin primary-pin">
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+						</div>
+						<div class="vehicle-pin alert-pin">
+							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+						</div>
+						<div class="map-label live">
+							<span></span>
+							12 veículos online
+						</div>
+					</div>
+					<div class="side-panel">
+						<div class="status-card">
+							<span class="status-label">Veículo em uso</span>
+							<strong>Fiat Strada Endurance</strong>
+							<small>Placa RKM-3F47 · Motorista: Ana Souza</small>
+							<div class="status-grid">
+								<span>2h 14m</span>
+								<span>47,3 km</span>
+								<span>78% comb.</span>
+							</div>
+						</div>
+						<div class="ai-card">
+							<div class="ai-icon">
+								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+							</div>
+							<div>
+								<strong>Resumo IA</strong>
+								<p>Trajeto compatível com destino. Uma parada não prevista de 8 min foi registrada.</p>
+							</div>
+						</div>
+						<div class="alert-row">
+							<span>Alerta</span>
+							<strong>102 km/h</strong>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="phone-preview">
+				<div class="phone-top"></div>
+				<div class="phone-content">
+					<div class="phone-title">
+						<span>Check-out</span>
+						<strong>RKM-3F47</strong>
+					</div>
+					<div class="field-line">
+						<span>Hodômetro</span>
+						<strong>38.214 km</strong>
+					</div>
+					<div class="field-line">
+						<span>Combustível</span>
+						<strong>78%</strong>
+					</div>
+					<div class="photo-slot">
+						<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z"/><circle cx="12" cy="13" r="3"/></svg>
+					</div>
+					<button type="button">Iniciar viagem</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		padding: 6.5rem 0 6rem;
+		overflow: hidden;
+	}
+
+	.hero::before {
+		content: "";
+		position: absolute;
+		inset: 0 0 auto;
+		height: 34rem;
+		background:
+			linear-gradient(120deg, color-mix(in oklab, var(--primary-soft) 70%, transparent), transparent 48%),
+			linear-gradient(240deg, color-mix(in oklab, var(--accent-soft) 45%, transparent), transparent 48%);
+		pointer-events: none;
+	}
+
+	.hero-grid {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 0.9fr) minmax(440px, 1.1fr);
+		align-items: center;
+		gap: 3.5rem;
+	}
+
+	.hero-content {
+		max-width: 620px;
+	}
+
+	h1 {
+		font-size: clamp(2.55rem, 5.4vw, 5rem);
+		line-height: 1.02;
+		margin-bottom: 1.35rem;
+	}
+
+	.hero-copy {
+		max-width: 580px;
+		font-size: 1.13rem;
+		margin-bottom: 2rem;
+	}
+
+	.hero-actions {
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
+		margin-bottom: 2.25rem;
+	}
+
+	.hero-metrics {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.75rem;
+		max-width: 620px;
+	}
+
+	.metric {
+		padding: 1rem;
+		background: color-mix(in oklab, var(--surface) 80%, transparent);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+	}
+
+	.metric strong {
+		display: block;
+		font-size: 1.35rem;
+		color: var(--fg);
+		margin-bottom: 0.25rem;
+	}
+
+	.metric span {
+		display: block;
+		color: var(--fg-muted);
+		font-size: 0.86rem;
+		line-height: 1.35;
+	}
+
+	.product-stage {
+		position: relative;
+		min-height: 570px;
+	}
+
+	.dashboard-window {
+		position: absolute;
+		top: 1rem;
+		right: 0;
+		width: min(100%, 660px);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow-strong);
+		overflow: hidden;
+	}
+
+	.window-bar {
+		height: 3rem;
+		display: flex;
+		align-items: center;
+		gap: 0.48rem;
+		padding: 0 1rem;
+		border-bottom: 1px solid var(--border);
+		background: var(--surface-soft);
+	}
+
+	.window-bar span {
+		width: 0.65rem;
+		height: 0.65rem;
+		border-radius: 50%;
+		background: var(--border-strong);
+	}
+
+	.window-bar span:first-child {
+		background: var(--danger);
+	}
+
+	.window-bar span:nth-child(2) {
+		background: var(--accent);
+	}
+
+	.window-bar span:nth-child(3) {
+		background: var(--ok);
+	}
+
+	.window-bar strong {
+		margin-left: auto;
+		color: var(--fg-muted);
+		font-size: 0.78rem;
+		font-weight: 700;
+	}
+
+	.dashboard-body {
+		display: grid;
+		grid-template-columns: 1.25fr 0.75fr;
+		min-height: 390px;
+	}
+
+	.map-panel {
+		position: relative;
+		overflow: hidden;
+		background-color: var(--surface-soft);
+		background-image:
+			linear-gradient(to right, color-mix(in oklab, var(--border) 78%, transparent) 1px, transparent 1px),
+			linear-gradient(to bottom, color-mix(in oklab, var(--border) 78%, transparent) 1px, transparent 1px);
+		background-size: 34px 34px;
+	}
+
+	.map-panel::before {
+		content: "";
+		position: absolute;
+		inset: 14%;
+		border: 1px solid color-mix(in oklab, var(--primary) 38%, transparent);
+		border-radius: 50%;
+		transform: rotate(-12deg);
+	}
+
+	.route-line {
+		position: absolute;
+		height: 6px;
+		border-radius: 999px;
+		background: var(--primary);
+		box-shadow: 0 0 0 5px color-mix(in oklab, var(--primary) 15%, transparent);
+	}
+
+	.route-one {
+		width: 260px;
+		left: 16%;
+		top: 38%;
+		transform: rotate(-26deg);
+	}
+
+	.route-two {
+		width: 210px;
+		right: 12%;
+		bottom: 30%;
+		transform: rotate(31deg);
+		background: var(--accent);
+		box-shadow: 0 0 0 5px color-mix(in oklab, var(--accent) 16%, transparent);
+	}
+
+	.vehicle-pin {
+		position: absolute;
+		width: 2.75rem;
+		height: 2.75rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		box-shadow: var(--shadow);
+	}
+
+	.primary-pin {
+		top: 29%;
+		left: 42%;
+		color: var(--primary);
+	}
+
+	.alert-pin {
+		right: 22%;
+		bottom: 22%;
+		color: var(--danger);
+	}
+
+	.map-label {
+		position: absolute;
+		left: 1rem;
+		bottom: 1rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 0.7rem;
+		background: rgb(var(--bg-rgb) / 0.86);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		color: var(--fg);
+		font-size: 0.82rem;
+		font-weight: 750;
+		backdrop-filter: blur(10px);
+	}
+
+	.live span {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: var(--ok);
+		box-shadow: 0 0 0 4px color-mix(in oklab, var(--ok) 18%, transparent);
+	}
+
+	.side-panel {
+		display: flex;
+		flex-direction: column;
+		gap: 0.9rem;
+		padding: 1rem;
+		border-left: 1px solid var(--border);
+		background: color-mix(in oklab, var(--surface) 92%, var(--surface-soft));
+	}
+
+	.status-card,
+	.ai-card,
+	.alert-row {
+		background: var(--surface-raised);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		padding: 1rem;
+		box-shadow: var(--shadow);
+	}
+
+	.status-label {
+		display: inline-flex;
+		margin-bottom: 0.75rem;
+		padding: 0.28rem 0.5rem;
+		background: var(--primary-soft);
+		color: var(--primary);
+		border-radius: 999px;
+		font-size: 0.7rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0;
+	}
+
+	.status-card strong,
+	.ai-card strong,
+	.alert-row strong {
+		display: block;
+		color: var(--fg);
+	}
+
+	.status-card small {
+		display: block;
+		margin-top: 0.35rem;
+		color: var(--fg-muted);
+		line-height: 1.45;
+	}
+
+	.status-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.4rem;
+		margin-top: 1rem;
+	}
+
+	.status-grid span {
+		padding: 0.55rem 0.45rem;
+		background: var(--surface-soft);
+		border-radius: 6px;
+		color: var(--fg);
+		font-size: 0.72rem;
+		font-weight: 750;
+		text-align: center;
+	}
+
+	.ai-card {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.75rem;
+	}
+
+	.ai-card p {
+		margin-top: 0.35rem;
+		font-size: 0.82rem;
+		line-height: 1.45;
+	}
+
+	.ai-icon {
+		width: 2.2rem;
+		height: 2.2rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: var(--radius);
+		color: var(--accent);
+		background: var(--accent-soft);
+	}
+
+	.alert-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: auto;
+		border-color: color-mix(in oklab, var(--danger) 36%, var(--border));
+	}
+
+	.alert-row span {
+		color: var(--danger);
+		font-size: 0.78rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0;
+	}
+
+	.phone-preview {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 215px;
+		height: 415px;
+		padding: 0.7rem;
+		border-radius: 2rem;
+		background: oklch(0.11 0.01 175);
+		box-shadow: var(--shadow-strong);
+		border: 1px solid oklch(0.24 0.01 175);
+	}
+
+	.phone-top {
+		position: absolute;
+		top: 1rem;
+		left: 50%;
+		width: 4.9rem;
+		height: 1.2rem;
+		transform: translateX(-50%);
+		border-radius: 999px;
+		background: #000;
+		z-index: 2;
+	}
+
+	.phone-content {
+		height: 100%;
+		padding: 3.3rem 0.85rem 0.85rem;
+		border-radius: 1.45rem;
+		background: var(--bg);
+		color: var(--fg);
+	}
+
+	.phone-title {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 1rem;
+	}
+
+	.phone-title span,
+	.field-line span {
+		color: var(--fg-muted);
+		font-size: 0.78rem;
+		font-weight: 700;
+	}
+
+	.phone-title strong {
+		font-family: "JetBrains Mono", monospace;
+		font-size: 0.82rem;
+	}
+
+	.field-line {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.75rem 0;
+		border-top: 1px solid var(--border);
+	}
+
+	.field-line strong {
+		font-size: 0.9rem;
+	}
+
+	.photo-slot {
+		height: 8.8rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0.75rem 0;
+		color: var(--fg-soft);
+		background:
+			linear-gradient(135deg, color-mix(in oklab, var(--primary-soft) 80%, transparent), transparent),
+			var(--surface-soft);
+		border: 1px dashed var(--border-strong);
+		border-radius: var(--radius);
+	}
+
+	.phone-content button {
+		width: 100%;
+		min-height: 2.45rem;
+		border: 0;
+		border-radius: var(--radius);
+		background: var(--primary);
+		color: var(--primary-fg);
+		font-weight: 800;
+	}
+
+	@media (max-width: 1060px) {
+		.hero-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.hero-content {
+			max-width: 760px;
+		}
+
+		.product-stage {
+			min-height: 590px;
+		}
+
+		.dashboard-window {
+			left: 5%;
+			right: auto;
+			width: 90%;
+		}
+
+		.phone-preview {
+			left: 8%;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.hero {
+			padding-top: 4.5rem;
+		}
+
+		.hero-actions,
+		.hero-metrics {
+			grid-template-columns: 1fr;
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.product-stage {
+			min-height: auto;
+		}
+
+		.dashboard-window,
+		.phone-preview {
+			position: relative;
+			inset: auto;
+			width: 100%;
+		}
+
+		.dashboard-body {
+			grid-template-columns: 1fr;
+		}
+
+		.map-panel {
+			min-height: 260px;
+		}
+
+		.side-panel {
+			border-left: 0;
+			border-top: 1px solid var(--border);
+		}
+
+		.phone-preview {
+			display: none;
+		}
+
+		.window-bar strong {
+			display: none;
+		}
+	}
+</style>

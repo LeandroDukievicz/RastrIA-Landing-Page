@@ -1,0 +1,121 @@
+---
+---
+<footer>
+	<div class="container footer-content">
+		<div class="footer-brand">
+			<div class="logo">
+				<div class="logo-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+				</div>
+				<span>RastrIA</span>
+			</div>
+			<p>Gestão inteligente de frotas corporativas com monitoramento em tempo real e análise de trajetos por IA.</p>
+		</div>
+		<div class="footer-links">
+			<div class="link-group">
+				<h4>Produto</h4>
+				<ul>
+					<li><a href="#features">Funcionalidades</a></li>
+					<li><a href="#how-it-works">Como funciona</a></li>
+					<li><a href="#use-cases">Casos de uso</a></li>
+				</ul>
+			</div>
+			<div class="link-group">
+				<h4>Empresa</h4>
+				<ul>
+					<li><a href="#">Sobre nós</a></li>
+					<li><a href="#">Contato</a></li>
+					<li><a href="#">Privacidade</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container footer-bottom">
+		<p>&copy; 2026 RastrIA — Protótipo de apresentação para gestão inteligente de frotas.</p>
+	</div>
+</footer>
+
+<style>
+	footer {
+		background: var(--bg);
+		border-top: 1px solid var(--border);
+		padding: 4rem 0 2rem;
+	}
+
+	.footer-content {
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		gap: 4rem;
+		margin-bottom: 4rem;
+	}
+
+	.footer-brand .logo {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		font-weight: 800;
+		font-size: 1.25rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.logo-icon {
+		background: var(--primary);
+		color: var(--primary-fg);
+		padding: 0.4rem;
+		border-radius: var(--radius);
+		display: flex;
+	}
+
+	.footer-brand p {
+		max-width: 400px;
+	}
+
+	.footer-links {
+		display: flex;
+		gap: 4rem;
+	}
+
+	.link-group h4 {
+		font-size: 0.875rem;
+		text-transform: uppercase;
+		letter-spacing: 0;
+		margin-bottom: 1.5rem;
+		color: var(--fg);
+	}
+
+	.link-group ul {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.link-group a {
+		font-size: 0.9375rem;
+		color: var(--fg-muted);
+		transition: color 0.2s ease;
+	}
+
+	.link-group a:hover {
+		color: var(--primary);
+	}
+
+	.footer-bottom {
+		padding-top: 2rem;
+		border-top: 1px solid var(--border);
+		text-align: center;
+	}
+
+	.footer-bottom p {
+		font-size: 0.875rem;
+	}
+
+	@media (max-width: 768px) {
+		.footer-content {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+		.footer-links {
+			gap: 2rem;
+		}
+	}
+</style>
