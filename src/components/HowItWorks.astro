@@ -1,4 +1,31 @@
 ---
+const screens = [
+	{
+		src: "/app/app-home.webp",
+		title: "Início",
+		caption: "Veículo em uso ao vivo",
+		alt: "Tela inicial do app RastrIA mostrando o veículo em uso ao vivo, tempo, distância e combustível"
+	},
+	{
+		src: "/app/app-map.webp",
+		title: "Mapa",
+		caption: "Posição em tempo real",
+		alt: "Tela de mapa do app RastrIA com a posição do veículo em tempo real e dados do motorista"
+	},
+	{
+		src: "/app/app-trip.webp",
+		title: "Resumo IA",
+		caption: "Desvios explicados",
+		alt: "Tela de detalhe de trajeto do app RastrIA com o resumo gerado por IA apontando destino divergente e parada não prevista"
+	},
+	{
+		src: "/app/app-alerts.webp",
+		title: "Alertas",
+		caption: "Ocorrências priorizadas",
+		alt: "Tela de alertas do app RastrIA listando veículo offline, rota incompatível e cerca geográfica violada"
+	}
+];
+
 const steps = [
 	{
 		number: "01",
@@ -24,20 +51,44 @@ const steps = [
 ---
 <section id="how-it-works" class="how-it-works">
 	<div class="container workflow">
-		<div class="workflow-copy">
+		<div class="workflow-copy" data-anim="reveal">
 			<p class="section-kicker">Operação guiada</p>
 			<h2>Um fluxo simples para equipes que precisam controlar veículos todos os dias.</h2>
 			<p>O sistema foi desenhado para reduzir atrito para o motorista e aumentar rastreabilidade para o gestor, sem depender de planilhas, mensagens soltas ou conferência manual de trajetos.</p>
 		</div>
 		<div class="steps-list">
 			{steps.map((step) => (
-				<article class="step-card">
+				<article class="step-card" data-anim="stagger">
 					<span class="step-number">{step.number}</span>
 					<div>
 						<h3>{step.title}</h3>
 						<p>{step.description}</p>
 					</div>
 				</article>
+			))}
+		</div>
+	</div>
+
+	<div class="container screens-strip">
+		<p class="strip-label" data-anim="reveal">Telas do produto</p>
+		<div class="screens-grid">
+			{screens.map((screen) => (
+				<figure class="screen-card" data-anim="stagger">
+					<div class="screen-frame">
+						<img
+							src={screen.src}
+							alt={screen.alt}
+							width="367"
+							height="821"
+							loading="lazy"
+							decoding="async"
+						/>
+					</div>
+					<figcaption>
+						<strong>{screen.title}</strong>
+						<span>{screen.caption}</span>
+					</figcaption>
+				</figure>
 			))}
 		</div>
 	</div>
@@ -61,12 +112,11 @@ const steps = [
 	}
 
 	.workflow-copy h2 {
-		font-size: clamp(2rem, 4.4vw, 3.25rem);
-		margin-bottom: 1.2rem;
+		margin-bottom: 1.1rem;
 	}
 
 	.workflow-copy p:last-child {
-		font-size: 1.05rem;
+		font-size: var(--lead);
 	}
 
 	.steps-list {
@@ -90,7 +140,7 @@ const steps = [
 		display: grid;
 		grid-template-columns: auto 1fr;
 		gap: 1rem;
-		padding: 1.15rem;
+		padding: 1.25rem;
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius);
@@ -113,15 +163,84 @@ const steps = [
 	}
 
 	.step-card h3 {
-		margin: 0.2rem 0 0.45rem;
-		font-size: 1.15rem;
+		margin: 0.15rem 0 0.4rem;
 	}
 
 	.step-card p {
-		font-size: 0.96rem;
+		font-size: var(--body);
+	}
+
+	/* faixa com as telas reais do produto */
+	.screens-strip {
+		margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
+		padding-top: clamp(2.5rem, 1.5rem + 2.5vw, 3.5rem);
+		border-top: 1px solid var(--border);
+	}
+
+	.strip-label {
+		margin-bottom: 1.75rem;
+		color: var(--fg-soft);
+		font-size: 0.76rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+
+	.screens-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: var(--gap-grid);
+	}
+
+	.screen-card {
+		margin: 0;
+	}
+
+	.screen-frame {
+		padding: 0.4rem;
+		border-radius: 1.5rem;
+		background: oklch(0.11 0.01 175);
+		border: 1px solid oklch(0.26 0.01 175);
+		box-shadow: var(--shadow);
+		transition: transform 0.25s ease, box-shadow 0.25s ease;
+	}
+
+	.screen-card:hover .screen-frame {
+		transform: translateY(-6px);
+		box-shadow: var(--shadow-strong);
+	}
+
+	.screen-frame img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 1.2rem;
+	}
+
+	.screen-card figcaption {
+		margin-top: 0.85rem;
+		padding-left: 0.15rem;
+	}
+
+	.screen-card figcaption strong {
+		display: block;
+		color: var(--fg);
+		font-size: 0.95rem;
+	}
+
+	.screen-card figcaption span {
+		display: block;
+		margin-top: 0.15rem;
+		color: var(--fg-muted);
+		font-size: 0.85rem;
 	}
 
 	@media (max-width: 900px) {
+		.screens-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 1.5rem;
+		}
+
 		.workflow {
 			grid-template-columns: 1fr;
 			gap: 2.5rem;

@@ -19,7 +19,7 @@ const useCases = [
 ---
 <section id="use-cases" class="use-cases">
 	<div class="container">
-		<div class="section-header">
+		<div class="section-header" data-anim="reveal">
 			<p class="section-kicker">Aplicações</p>
 			<h2>Controle para operações onde cada veículo precisa prestar contas.</h2>
 			<p>Da frota administrativa à equipe de rua, o RastrIA cria um padrão único de visibilidade, registro e tomada de decisão.</p>
@@ -27,7 +27,7 @@ const useCases = [
 
 		<div class="use-cases-grid">
 			{useCases.map((useCase) => (
-				<article class="use-case-card">
+				<article class="use-case-card" data-anim="stagger">
 					<div class="use-case-icon">
 						{useCase.icon === "building" && <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>}
 						{useCase.icon === "users" && <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
@@ -39,7 +39,7 @@ const useCases = [
 			))}
 		</div>
 
-		<div id="contact" class="cta-panel">
+		<div id="contact" class="cta-panel" data-anim="reveal">
 			<div>
 				<p class="section-kicker">Próximo passo</p>
 				<h2>Apresente o RastrIA com uma landing mais forte e pronta para evoluir para captação.</h2>
@@ -72,13 +72,11 @@ const useCases = [
 	.use-cases-grid {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 1rem;
-		margin-bottom: 1rem;
+		gap: var(--gap-grid);
 	}
 
 	.use-case-card {
-		min-height: 220px;
-		padding: 1.35rem;
+		padding: var(--pad-card);
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius);
@@ -86,20 +84,23 @@ const useCases = [
 	}
 
 	.use-case-icon {
-		width: 3.25rem;
-		height: 3.25rem;
+		width: 3rem;
+		height: 3rem;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		margin-bottom: 1.35rem;
+		margin-bottom: 1.25rem;
 		color: var(--primary);
 		background: var(--primary-soft);
 		border-radius: var(--radius);
 	}
 
 	.use-case-card h3 {
-		margin-bottom: 0.75rem;
-		font-size: 1.18rem;
+		margin-bottom: 0.6rem;
+	}
+
+	.use-case-card p {
+		font-size: var(--body);
 	}
 
 	.cta-panel {
@@ -107,8 +108,8 @@ const useCases = [
 		grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
 		gap: 2rem;
 		align-items: center;
-		margin-top: 1rem;
-		padding: 2rem;
+		margin-top: clamp(2.5rem, 1.5rem + 2.5vw, 3.5rem);
+		padding: clamp(1.75rem, 1rem + 2vw, 2.5rem);
 		background:
 			linear-gradient(135deg, color-mix(in oklab, var(--primary) 22%, transparent), transparent 60%),
 			var(--surface);
@@ -118,9 +119,8 @@ const useCases = [
 	}
 
 	.cta-panel h2 {
-		max-width: 760px;
+		max-width: 34rem;
 		margin-bottom: 0.8rem;
-		font-size: clamp(1.7rem, 3.2vw, 2.55rem);
 	}
 
 	.cta-panel p:last-child {
