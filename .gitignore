@@ -11,3 +11,4 @@ yarn-error.log*
 
 # Documentos internos (nao vao para o build nem para o GitHub publico)
 docs/
+.vercel
