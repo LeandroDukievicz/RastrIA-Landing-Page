@@ -8,3 +8,6 @@ yarn-debug.log*
 yarn-error.log*
 .env
 .env.*
+
+# Documentos internos (nao vao para o build nem para o GitHub publico)
+docs/
